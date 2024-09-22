@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form id="uploadForm" class="mt-5">
+                <div class="circle-image mb-3" id="imageCircle">
+                    <img id="previewImage" src="" alt="Image Preview">
+                </div>
+
+                <div class="form-group">
+                    <label for="imageInput">Choose an image</label>
+                    <input type="file" class="form-control" id="imageInput" accept="image/*" onchange="loadFile(event)">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" rows="3"></textarea>
+                    <small id="descriptionHelp" class="form-text text-muted">You can rewrite the description anytime.</small>
+                </div>
+
+                <div class="form-group password-toggle">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password">
+                    <span class="toggle-eye" onclick="togglePassword('password')">&#128065;</span>
+                </div>
+
+                <div class="form-group password-toggle">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword">
+                    <span class="toggle-eye" onclick="togglePassword('confirmPassword')">&#128065;</span>
+                </div>
+
+                <div id="passwordMatchMessage" class="message">Passwords do not match!</div>
+                <div id="formErrorMessage" class="message">Something is wrong!</div>
+
+                <button type="submit" id="submitButton" class="btn btn-primary btn-block">Submit</button>
+                <div id="formSuccessMessage" class="success-message">Form is submitted successfully!</div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadFile(event) {
+        var image = document.getElementById('previewImage');
+        image.src = URL.createObjectURL(event.target.files[0]);
+        image.style.display = 'block';
+    }
+
+    function togglePassword(fieldId) {
+        var field = document.getElementById(fieldId);
+        field.type = field.type === "password" ? "text" : "password";
+    }
+
+    document.getElementById('uploadForm').onsubmit = function(event) {
+        event.preventDefault();
+
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var submitButton = document.getElementById('submitButton');
+        var formErrorMessage = document.getElementById('formErrorMessage');
+        var passwordMatchMessage = document.getElementById('passwordMatchMessage');
+        var formSuccessMessage = document.getElementById('formSuccessMessage');
+
+        formErrorMessage.style.display = 'none';
+        passwordMatchMessage.style.display = 'none';
+        formSuccessMessage.style.display = 'none';
+
+        if (password === '' || confirmPassword === '' || document.getElementById('description').value === '') {
+            submitButton.classList.add('disabled-submit');
+            formErrorMessage.style.display = 'block';
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            passwordMatchMessage.style.display = 'block';
+            return;
+        }
+
+        submitButton.classList.add('disabled-submit');
+        formSuccessMessage.style.display = 'block';
+    }
+    var passwordE = document.getElementById('password');
+    var confirmPasswordE = document.getElementById('confirm-password');
+    function valid () {
+        var password = passwordE.value;
+        var confirmPassword = confirmPasswordE.value;
+        if (password.length <8){
+            document.getElementById('errorMessageLength').textContent = 'password Must be at least 8 characters';
+
+        } else  document.getElementById('errorMessageLength').textContent = "";
+
+        if (password !== confirmPassword) {
+           if (confirmPassword.length >= 1) {
+            document.getElementById('errorMessageLength').textContent = 'password is not matched witn confirm password';
+
+           } else{
+
+           }document.getElementById('errorMessageLength').textContent = "";
+        }
+
+
+    }
+    
+    
+</script>
+
+</body>
+</html>
